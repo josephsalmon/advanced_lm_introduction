@@ -1,0 +1,341 @@
+ \documentclass[unknownkeysallowed]{beamer}
+\usepackage[french,english]{babel}
+
+\usepackage{pythontex}
+\usepackage[francais]{babel}
+\usepackage{xcolor}
+\usepackage{movie15}
+\usepackage[utf8]{inputenc}
+\usepackage{pythontex}
+\usepackage{fontawesome}
+\usetheme{Madrid}
+\usecolortheme{beaver}
+\usepackage{utopia}%font utopia imported
+\usepackage{graphicx}
+\newtheorem{exmp}{Exemple}[section]
+\usetheme{Boadilla}
+\usecolortheme{beaver}
+\renewcommand{\contentsname}{Table des matières} 
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%             Headers               %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\bigskip
+\bigskip
+\begin{center}{
+\LARGE\color{marron}
+\textbf{HMMA 307 : Advanced Linear Modeling}
+\textbf{ }\\
+\vspace{0.5cm}
+}
+
+\color{marron}
+\textbf{Chapter 1 : Linear regression}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{Santinelli Emma \ Mégane Dieval \ Yassine Sayd} \\
+\vspace{0.1cm}
+\url{https://github.com/MegDie/advanced_lm_introduction}\\
+\vspace{0.5cm}
+Université de Montpellier \\
+\end{center}
+
+\centering
+\includegraphics[width=0.13\textwidth]{Logo_université_montpellier.png}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%       PLAN      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Table of Contents}
+\tableofcontents[hideallsubsections]
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginSection[]
+{
+\begin{frame}<beamer>{Table of Contents}
+\tableofcontents[currentsubsection,
+    hideothersubsections,
+    sectionstyle=show/shaded,
+]
+\end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction and Ordinary Least Square}
+\label{sec:introdcution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\begin{alertblock}{Model}
+Suppose the data consists of n observations $( yi, xi )^n_{i=1}$ with p features. 
+\newline The model can be written in matrix notation as :
+\begin{center}
+$y=X\beta+\epsilon$
+\end{center}
+where
+ \begin{itemize}
+        \item $X$ is an $n×p$ matrix of regressors
+        \item $\beta$  is a p×1 vector of unknown parameters
+        \item $\epsilon$ is a vector of normal random errors with mean 0 
+    \end{itemize}
+\end{alertblock}
+\vspace{0.4cm}
+\end{frame}
+\begin{frame}
+The OLS estimator is any coefficient vector
+$\hat\beta^{LS}\in\mathbb{R}^p$ such that :
+\newline
+\begin{center}
+$\hat\beta^{LS} \in argmin\frac{1}{2n}\|y-X\beta\|^2$   
+\end{center}
+\vspace{0.5cm}
+with, 
+\begin{center}
+    
+$f(\beta)=\frac{1}{2n}\sum\limits_{i=1}^n (y_{i}-\frac{1}{2n}(X\beta)_{i})^2$
+\vspace{0.5cm}
+\newline =$\beta^T\frac{X^TX}{2n}\beta+\frac{1}{2n}\|y\|^2- \langle y,X\beta\rangle$
+\end{center}
+\vspace{0.5cm}
+where, 
+$\langle y,X\beta\rangle=y^TX\beta=\beta^TX^Ty=\langle \beta,X^Ty\rangle$
+
+
+\end{frame}
+\begin{block}{Notation}
+The matrix $\hat\Sigma=\frac{X^TX}{n}$ matrix is called the Gram matrix.
+\begin{center}
+    $X^TX=\begin{pmatrix}
+   x_{1}^T  \\
+   . \\
+   . \\
+   x_{p}^T  \\
+\end{pmatrix}(x_{1}^T. . . x_{p}^T) $,
+\end{center}
+
+\end{block}
+The Gram matrix is equivalent to :
+\begin{center}
+$[X^TX]_{j,j'}=[\langle x_{j},x_{j'}\rangle]_{(j,j')\in[1,p]^2}$    
+\end{center}
+
+\begin{block}{Remark}
+Most of the times, we scale features.
+\newline
+We have : $\bar{X_{j}}=\frac{1}{n} \sum\limits_{i=1}^{n} x_{ij}$ (1)
+\newline
+ To center explanatory variables, we use the equation (1) to build the centered vector $X_{c}$
+\newline
+$X_{c}$ \Leftarrow  $X$ - ($\bar{X_{1}}1_n,....,\bar{X_{p}}1_n$) where 1_n=(1,...,1)
+
+Then we obtain $\bar{X_{c}}=O_n$ 
+
+To reduce explanatory variables, we use :
+\newline
+\begin{center}
+$\hat\sigma_{j}^2=\frac{1}{n} \sum\limits_{i=1}^{n} (X_{ij}-\bar{X_{j}})$   
+\end{center}
+Let $Xr$ be the reduced vector, then :
+\newline
+\begin{center}
+$Xr_{j}=\frac{X{j}-\bar{X_{j}}1_n}{\hat\sigma_{j}}$    
+\end{center}
+
+\end{block}
+
+
+\begin{frame}
+\begin{alertblock}{First Order Optimality Condition}
+We can verify the first order optimality condition because $\nabla{f(\hat\beta^{LS})}=0$
+\\
+Note that f is a $C^{\infty}$ function, then differentiable
+
+\end{alertblock}
+ 
+\\\begin{block}{Remark}
+f is a convex function, so f has a local minimum and a global one. 
+\end{block}
+ 
+\begin{block}{Conclusion}
+$\hat\beta^{LS}$ satisfy the following equations of orthogonality :
+\begin{itemize}
+        \item $\frac{X^TX}{n}\hat\beta^{LS}-\frac{X^Ty}{n}=0$
+        \item \iff $X^T(\frac{X\hat\beta^{LS}-y}{n})=0$
+        \item \iff $X^T(y-X\hat\beta^{LS})=0$
+        \item \iff $\langle X_{j},y-X\beta\rangle=0$ for j in 1:p
+    \end{itemize}
+
+
+\end{block}
+
+\newpage
+
+\begin{block}{Attention}
+
+If $p$ < $n$ so rank($X$) \leq $n$ < p Then $\hat\beta^{LS}$ is not unique 
+
+\end{block}
+
+    
+\end{frame}
+
+\begin{frame}
+
+\begin{alertblock}{interpretation}
+    \begin{itemize}
+        \item  Each explanatory variable is orthogonal to the residuals $\Gamma=y-X\hat{\beta}^{LS}$ With $\hat{\beta}^{LS}$ is a solution of the linear $pxp$ system : $$ \hat{\Sigma}\beta= \frac{X^T y}{n}  $$
+       
+    \end{itemize}
+
+
+\end{alertblock}
+
+\begin{block}{Remark}
+    \begin{itemize}
+        \item  If $\hat{\Sigma}$ is invertible, the solution of the linear system is unique
+        \item $\hat{\Sigma}$ is invertible $\Leftrightarrow$ $\hat{\Sigma}$ is positive definite
+        \item if $\hat{\Sigma}$ invertible, so $rank(\hat{\Sigma})=p$
+        \item we assume that we have a full rank column e.g. : $$rank(X)=dim(Vect(X_1,...,X_p)) \leq n $$
+       
+    \end{itemize}
+
+
+\end{block}
+\end{frame}
+
+\begin{frame}
+
+
+
+\begin{alertblock}{Remark}
+    \begin{itemize}
+        \item  If $rank(X)=p$, so $\hat{\Sigma}$ is invertible and : $$\hat{\beta}^{LS}=\hat{\Sigma}^{-1}\frac{X^T y}{n}=(\frac{X^T y}{n})^{-1} \frac{X^T y}{n}$$
+       so :  $$ \hat{\beta}^{LS}=(X^TX)^{-1}X^Ty$$
+       
+    \end{itemize}
+
+
+\end{alertblock}
+
+\begin{block}{Notice}
+    \begin{itemize}
+        \item  In practice it is exceptional to invert $\hat{\Sigma} $ because one solves many linear systems
+       
+    \end{itemize}
+
+
+\end{block}
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Singular Value Decomposition}
+\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\begin{block}{Reminder}
+Let $\Sigma\in\mathbb{R}^{p*p}$.
+\newline
+If   $\Sigma^T=\Sigma$ then $\Sigma$ is diagonalizable.
+\end{block}
+\begin{alertblock}{Theorem}
+For all matrix $M\in\mathbb{R}^{m1*m2}$ of rank r, there exist two orthogonal matrix $U\in \mathbb{R}^{m1*r}$ and $V\in\mathbb{R}^{m2*r}$ such that :
+\begin{center}
+    $M=U diag(s_{1}...s_{r})U^T$
+\end{center}
+where $s_{1}\ge s_{2} \ge ... \ge s_{r} \ge 0$ are the singular values of M.
+\end{alertblock}
+\vspace{0.5cm}
+Note that : $M=\sum\limits_{j=1}^r s_{j}u_{j}v_{j}^T$ with : $U=[u_{1},...,u_{r}]$
+et $V=[v_{1} ... v_{r}]$
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+\begin{block}{Definition}
+For $M\in\mathbb{R}^{m1*m2}$, a pseudoinverse of $M$ is defined as a matrix $M^{+}$ satisfying :
+\begin{center}
+    $M^{+}=Vdiag(\frac{1}{s_{1}} ... \frac{1}{s_{r}})U^T$
+    =$\sum\limits_{j=1}^r \frac{1}{s_{j}}v_{j}u_{j}^T$
+\end{center}
+\end{block}
+\vspace{0.5cm}
+Remark : If $M$ is invertible, its pseudoinverse is its inverse. That is, $A^{+}=A^{-1}$
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Bibliography}
+[1] Joseph Salmon, \textit{Modéle linéaire avancé : introduction}, 2019, \url{http://josephsalmon.eu/enseignement/Montpellier/HMMA307/Introduction.pdf}.
+\newline
+
+[2] Francois Portier and Anne Sabourin, \textit{Lecture notes on ordinary least squares}, 2019, \url{https://perso.telecom-paristech.fr/sabourin/mdi720/main.pdf}
+\newline
+\newline
+[3] \textit{Ordinary least squares}, 2020, 
+\url{https://en.wikipedia.org/wiki/Ordinary_least_squares}.
+\newline
+\newline
+[4] \textit{Singular value decomposition}, 2020, 
+\url{https://en.wikipedia.org/wiki/Singular_value_decomposition}.
+
+
+\newline
+\printbibliography
+\end{frame}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\end{document}
