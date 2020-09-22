@@ -6,7 +6,7 @@ import seaborn as sns
 
 
 #data links
-url1 = "https://github.com/MegDie/advanced_lm_introduction/blob/master/datasets/Donnees_comptage.csv"
+url1 = "https://github.com/MegDie/advanced_lm_introduction/blob/master/datasets/Donnees_comptage.ods"
 url2 = "https://github.com/MegDie/advanced_lm_introduction/blob/master/datasets/crash_bikes.csv"
 
 #data download
@@ -138,6 +138,32 @@ n=0
 for i in range(1000):
     if res[i]==False:
         n=n+1
+
+        
+#new dataset        
+df_comptage = pd.read_excel(path_target1, engine="odf")
+variables = ['Date de passage', 'Heure de passage', 
+             'Nombre total de vélos passés depuis la mise en circulation', 'Nombre de vélos passés depuis le début de la journée']
+df_comptage = df_comptage[variables]
+
+#one row per day
+df_comptage_ag = df_comptage.groupby('Date de passage').aggregate({'Total' : 'max', 'Day_total': 'max'})
+
+#quantitative day
+df_comptage_ag['num']=range(182)
+
+#sinus day
+df_comptage_ag['sinus_day'] = np.sin(df_comptage_ag['Day_total'])
+df_comptage_ag['sinus_num'] = np.sin(df_comptage_ag['num'])
+
+#sampling
+df_test2 = df_comptage_ag.iloc[0:21] #21 obs
+df_sample2 = df_comptage_ag.iloc[21:182]
+
+#ols
+results2 = smf.ols('Total ~ num', data=df_sample2).fit()
+results3 = smf.ols('Day_total ~ num', data=df_sample2).fit()
+results4 = smf.ols('Day_Total ~ num + Total + sin_num', data=df_sample2).fit()
         
         
 
