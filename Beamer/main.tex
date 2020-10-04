@@ -152,7 +152,7 @@ We have : $\bar{X_{j}}=\frac{1}{n} \sum\limits_{i=1}^{n} x_{ij}$ (1)
 \newline
  To center explanatory variables, we use the equation (1) to build the centered vector $X_{c}$
 \newline
-$X_{c}$ =  $X$ - ($\bar{X_{1}}1_n,....,\bar{X_{p}}1_n$) where 1_n=(1,...,1)
+$X_{c}$ =  $X$ - ($\bar{X_{1}}1_n,\dots,\bar{X_{p}}1_n$) where 1_n=(1,\dots,1)
 
 Then we obtain $\bar{X_{c}}=O_n$
 
@@ -221,7 +221,7 @@ If $p$ < $n$ so rank($X$) \leq $n$ < p Then $\hat\beta^{LS}$ is not unique
         \item  If $\hat{\Sigma}$ is invertible, the solution of the linear system is unique
         \item $\hat{\Sigma}$ is invertible $\Rightarrow$ $\hat{\Sigma}$ is positive definite
         \item If $\hat{\Sigma}$ invertible, so $rank(\hat{\Sigma})=p$
-        \item we assume that we have a full rank column e.g. : $$rank(X)=dim(Vect(X_1,...,X_p)) \leq n $$
+        \item we assume that we have a full rank column e.g. : $$rank(X)=dim(Vect(X_1,\dots,X_p)) \leq n $$
 
     \end{itemize}
 
@@ -389,13 +389,13 @@ If   $\Sigma^T=\Sigma$ then $\Sigma$ is diagonalizable.
 \begin{alertblock}{Theorem}
 For all matrix $M\in\mathbb{R}^{m_1 \times m_2}$ of rank $r$, there exist two orthogonal matrix $U\in \mathbb{R}^{m_1 \times r}$ and $V\in\mathbb{R}^{m_2 \times r}$ such that :
 \begin{center}
-    $M=U diag(s_{1}...s_{r})U^T$
+    $M=U diag(s_{1}\dotss_{r})U^T$
 \end{center}
-where $s_{1}\ge s_{2} \ge ... \ge s_{r} \ge 0$ are the singular values of M.
+where $s_{1}\ge s_{2} \ge \dots \ge s_{r} \ge 0$ are the singular values of M.
 \end{alertblock}
 \vspace{0.5cm}
-Note that : $M=\sum\limits_{j=1}^r s_{j}u_{j}v_{j}^T$ with : $U=[u_{1},...,u_{r}]$
-et $V=[v_{1} ... v_{r}]$
+Note that : $M=\sum\limits_{j=1}^r s_{j}u_{j}v_{j}^T$ with : $U=[u_{1},\dots,u_{r}]$
+et $V=[v_{1} \dots v_{r}]$
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -403,7 +403,7 @@ et $V=[v_{1} ... v_{r}]$
 \begin{block}{Definition}
 For $M\in\mathbb{R}^{m_1 \times m_2}$, a pseudoinverse of $M$ is defined as a matrix $M^{+}$ satisfying :
 \begin{center}
-    $M^{+}=Vdiag(\frac{1}{s_{1}} ... \frac{1}{s_{r}})U^T$
+    $M^{+}=Vdiag(\frac{1}{s_{1}} \dots \frac{1}{s_{r}})U^T$
     =$\sum\limits_{j=1}^r \frac{1}{s_{j}}v_{j}u_{j}^T$
 \end{center}
 \end{block}
