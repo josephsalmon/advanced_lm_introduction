@@ -101,10 +101,11 @@ $y=X\beta+\varepsilon$
 \end{center}
 where
 \begin{itemize}
-	\item $X$ is an $n \times p$ matrix of regressors
+	\item $X=[\bfx_1,\dots,\bfx_p]= [x_1^\top,\dots,x_n^\top]^\top$ is an $n \times p$ matrix of regressors
 	\item $\beta$ is a $p \times 1$ vector of unknown parameters
 	\item $\varepsilon$ is a vector of normal random errors with mean $0$
 \end{itemize}
+XXX % fix issues when using x_i (for i=1...n) and \bfx_j (j=1...p)
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -135,7 +136,7 @@ $\langle y,X\beta\rangle=y^{\top}X\beta=\beta^{\top}X^{\top}y=\langle \beta,X^{\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{XXX?} % XXX TODO give a name
-\begin{block}{Notation}
+\mytheorem{Notation}{
 The matrix $\hat\Sigma=\frac{X^{\top}X}{n}$ matrix is called the Gram matrix.
 \begin{center}
     $X^{\top}X=\begin{pmatrix}
@@ -144,12 +145,12 @@ The matrix $\hat\Sigma=\frac{X^{\top}X}{n}$ matrix is called the Gram matrix.
    x_{p}^{\top}  \\
 \end{pmatrix}(x_{1},\dots, x_{p}) $,
 \end{center}
-\end{block}
+}
 
 The Gram matrix is equivalent to :
-\begin{center}
-$[X^{\top}X]_{j,j'}=[\langle x_{j},x_{j'}\rangle]_{(j,j')\in[1,p]^2}$
-\end{center}
+\begin{align*}
+[X^{\top}X]_{j,j'}=[\langle x_{j},x_{j'}\rangle]_{(j,j')\in[1,p]^2}
+\end{align*}
 
 \rem
 Most of the times, we scale features.
