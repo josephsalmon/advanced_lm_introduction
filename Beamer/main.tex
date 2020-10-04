@@ -93,9 +93,8 @@ Université de Montpellier \\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\begin{alertblock}{Model}
-Suppose the data consists of $n$ samples $( y_i, x_i )^n_{i=1}$ with $p$ features.
+\begin{frame}{Model}
+Suppose the data consists of$n$ samples $(y_i, x_i)_{i=1,\dots,n}$ with $p$ features.
 \newline The model can be written in matrix notation as :
 \begin{center}
 $y=X\beta+\epsilon$
@@ -106,8 +105,6 @@ where
 	\item $\beta$ is a $p \times 1$ vector of unknown parameters
 	\item $\epsilon$ is a vector of normal random errors with mean $0$
 \end{itemize}
-\end{alertblock}
-% \vspace{0.4cm}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -117,9 +114,10 @@ where
 The OLS estimator is any coefficient vector
 $\hat\beta^{LS}\in\mathbb{R}^p$ such that :
 \newline
-\begin{center}
-$\hat\beta^{LS} \in argmin \ \underbrace{\frac{1}{2n}\|y-X\beta\|^2 }_{f(\beta)}$
-\end{center}
+\begin{align}
+\hat\beta^{LS} \in \argmin_{\beta \in \bbR^p}
+\underbrace{\frac{1}{2n}\|y-X\beta\|^2 }_{f(\beta)}
+\end{align}
 \vspace{0.5cm}
 and $f(\beta)=\frac{1}{2n}\sum\limits_{i=1}^n (y_{i}-\frac{1}{2n}(X\beta)_{i})^2$ =\ $\beta^T\frac{X^TX}{2n}\beta+\frac{1}{2n}\|y\|^2- \langle y,X\beta\rangle$
 
@@ -132,19 +130,17 @@ $\langle y,X\beta\rangle=y^TX\beta=\beta^TX^Ty=\langle \beta,X^Ty\rangle$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{title}
-	
 \begin{block}{Notation}
 The matrix $\hat\Sigma=\frac{X^TX}{n}$ matrix is called the Gram matrix.
 \begin{center}
     $X^TX=\begin{pmatrix}
    x_{1}^T  \\
-   . \\
-   . \\
+   \vdots   \\
    x_{p}^T  \\
-\end{pmatrix}(x_{1}. . . x_{p}) $,
+\end{pmatrix}(x_{1},\dots, x_{p}) $,
 \end{center}
-
 \end{block}
+
 The Gram matrix is equivalent to :
 \begin{center}
 $[X^TX]_{j,j'}=[\langle x_{j},x_{j'}\rangle]_{(j,j')\in[1,p]^2}$
@@ -157,7 +153,7 @@ We have : $\bar{X_{j}}=\frac{1}{n} \sum\limits_{i=1}^{n} x_{ij}$ (1)
 \newline
  To center explanatory variables, we use the equation (1) to build the centered vector $X_{c}$
 \newline
-$X_{c}$ =  $X$ - ($\bar{X_{1}}1_n,\dots,\bar{X_{p}}1_n$) where 1_n=(1,\dots,1)
+$X_{c}$ =  $X$ - ($\bar{X_{1}}1_n,\dots,\bar{X_{p}}1_n$) where $\1_n=(1,\dots,1)$
 
 Then we obtain $\bar{X_{c}}=O_n$
 
@@ -171,6 +167,7 @@ Let $X_r$ be the reduced vector, then :
 \begin{center}
 $X_{r_{j}}=\frac{X_{j}-\bar{X_{j}}1_n}{\hat\sigma_{j}}$
 \end{center}
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -427,12 +424,9 @@ For $M\in\mathbb{R}^{m_1 \times m_2}$, a pseudoinverse of $M$ is defined as a ma
 [4] \textit{Singular value decomposition}, 2020,
 \url{https://en.wikipedia.org/wiki/Singular_value_decomposition}.
 
-
 \newline
 \printbibliography
 \end{frame}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 \end{document}
