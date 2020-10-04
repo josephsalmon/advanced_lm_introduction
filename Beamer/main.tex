@@ -283,6 +283,7 @@ We propose to estimate the severity of accidents by the feature "sexe". The prob
     \item Modalities of the feature to predict: "0 - Indemne", "1 - Blessé léger", "Blessé hospitalisé", and "3 - Tué"
     \item Modalities of the feature "sexe": "M" and "F"
 \end{itemize}
+XXX % XXX TODO: details better the dataset
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -380,37 +381,43 @@ Prediction of the number of bicycles in a day with the date and the total number
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\begin{block}{Reminder}
-Let $\Sigma\in\mathbb{R}^{p \times p}$.
+\begin{frame}{XXX?} % XXX TODO give a name
 
-If $\Sigma^{\top}=\Sigma$ then $\Sigma$ is diagonalizable.
-\end{block}
-\begin{alertblock}{Theorem}
+\underline{Reminder}: Let $\Sigma\in\mathbb{R}^{p \times p}$, if $\Sigma^{\top}=\Sigma$ then $\Sigma$ is diagonalizable.
+
+\vspace{0.5cm}
+
+\mytheorem{Theorem}{
 For all matrix $M\in\mathbb{R}^{m_1 \times m_2}$ of  ${\rm rank} (r)$, there exist two orthogonal matrix $U\in \mathbb{R}^{m_1 \times r}$ and $V\in\mathbb{R}^{m_2 \times r}$ such that :
 \begin{center}
     $M=U \diag(s_{1},\dots, s_{r})U^{\top}$
 \end{center}
 where $s_{1}\ge s_{2} \ge \dots \ge s_{r} \ge 0$ are the singular values of M.
-\end{alertblock}
+}
+
 \vspace{0.5cm}
-Note that : $M=\sum_{j=1}^r s_{j}u_{j}v_{j}^{\top}$ with : $U=[u_{1},\dots,u_{r}]$
+
+\rem $M=\sum_{j=1}^r s_{j}u_{j}v_{j}^{\top}$ with : $U=[u_{1},\dots,u_{r}]$
 et $V=[v_{1} \dots v_{r}]$
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\begin{block}{Definition}
+\begin{frame}{XXX?} % XXX TODO give a name
+
+\mytheorem{Definition}{
 For $M\in\mathbb{R}^{m_1 \times m_2}$, a pseudoinverse of $M$ is defined as a matrix $M^{+}$ satisfying :
-\begin{center}
-    $M^{+}=Vdiag(\frac{1}{s_{1}} \dots \frac{1}{s_{r}})U^{\top}$
-    =$\sum\limits_{j=1}^r \frac{1}{s_{j}}v_{j}u_{j}^{\top}$
-\end{center}
-\end{block}
+\begin{equation*}
+    M^{+}
+    = V \diag\left(\frac{1}{s_{1}} \dots \frac{1}{s_{r}}\right)U^{\top}
+    = \sum_{j=1}^r \frac{1}{s_{j}}v_{j}u_{j}^{\top}
+\end{equation*}
+}
+
 \vspace{0.5cm}
-\rem : If $M$ is invertible, its pseudoinverse is its inverse. That is, $A^{+}=A^{-1}$
+
+\rem If $M$ is invertible, its pseudoinverse is its inverse. That is, $A^{+}=A^{-1}$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
