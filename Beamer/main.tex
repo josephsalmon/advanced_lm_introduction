@@ -185,23 +185,32 @@ $X_{r_{j}}=\frac{X_{j}-\bar{X_{j}}1_n}{\hat\sigma_{j}}$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\begin{alertblock}{First Order Optimality Conditions}
-We can verify the first order optimality condition because $\nabla{f(\hat\beta^{\rm LS})}=0$
-\\
-Note that $f$ is a $C^{\infty}$ function, then differentiable
+\mytheorem{First Order Optimality Conditions}{
+We can verify the first order optimality condition because
 
-\end{alertblock}
+\begin{align*}
+	\nabla{f(\hat\beta^{\rm LS})}=0
+\end{align*}
+}
+
+\vspace{0.4cm}
+
+\rem If $f$ is a $C^{\infty}$ function, then it is differentiable
+
+
 \rem $f$ is a convex function so a local minimum is a global one.
 
-\begin{block}{Conclusion}
-$\hat\beta^{\rm LS}$ satisfy the following equations of orthogonality :
-\begin{itemize}
-        \item $\frac{X^{\top}X}{n}\hat\beta^{\rm LS}-\frac{X^{\top}y}{n}=0$
-        \item $\iff X^{\top}(\frac{X\hat\beta^{\rm LS}-y}{n})=0$
-        \item $\iff X^{\top}(y-X\hat\beta^{\rm LS})=0$
-        \item $\iff \langle X_{j},y-X\beta\rangle=0$ for $ j \in [p]$
-    \end{itemize}
-\end{block}
+\vspace{0.4cm}
+
+\underline{Conclusion}:
+$\hat\beta^{\rm LS}$ satisfies the following equations of orthogonality :
+\begin{align*}
+\nabla{f(\hat\beta^{\rm LS})} = 0
+& \iff\frac{X^{\top}X}{n}\hat\beta^{\rm LS}-\frac{X^{\top}y}{n}=0\\
+& \iff X^{\top}(\frac{X\hat\beta^{\rm LS}-y}{n})=0\\
+& \iff X^{\top}(y-X\hat\beta^{\rm LS})=0\\
+& \iff \langle X_{j},y-X\beta\rangle=0 \text{for}  j \in [p]\\
+\end{align*}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -227,15 +236,14 @@ If $p < n$ so ${\rm rank}(X) \leq n < p$.Then, $\hat{\beta}^{\rm LS}$ is not uni
 \end{alertblock}
 
 
-\begin{block}{Remarks}
+\rem
     \begin{itemize}
         \item  If $\hat{\Sigma}$ is invertible, the solution of the linear system is unique
         \item $\hat{\Sigma}$ is invertible $\Rightarrow$ $\hat{\Sigma}$ is positive definite
-        \item If $\hat{\Sigma}$ invertible, so $rank(\hat{\Sigma})=p$
-        \item we assume that we have a full rank column e.g. : $$rank(X)=dim(Vect(X_1,\dots,X_p)) \leq n $$
-
+        \item If $\hat{\Sigma}$ invertible, so ${\rm rank}(\hat{\Sigma})=p$
+        \item we assume that we have a full rank column e.g. : $${\rm rank}(X)=\dim(\vect(X_1,\dots,X_p)) \leq n $$
     \end{itemize}
-\end{block}
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -243,24 +251,16 @@ If $p < n$ so ${\rm rank}(X) \leq n < p$.Then, $\hat{\beta}^{\rm LS}$ is not uni
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{XXX?} % XXX TODO give a name
 
-\begin{alertblock}{Remark}
-    \begin{itemize}
-        \item  If $rank(X)=p$, so $\hat{\Sigma}$ is invertible and : $$\hat{\beta}^{\rm LS}=\hat{\Sigma}^{-1}\frac{X^{\top} y}{n}=(\frac{X^{\top} y}{n})^{-1} \frac{X^{\top} y}{n}$$
-       so :  $$ \hat{\beta}^{\rm LS}=(X^{\top}X)^{-1}X^{\top}y$$
+\mytheorem{Result}{
+\begin{itemize}
+    \item  If ${\rm rank}(X)=p$, so $\hat{\Sigma}$ is invertible and : $$\hat{\beta}^{\rm LS}=\hat{\Sigma}^{-1}\frac{X^{\top} y}{n}=(\frac{X^{\top} y}{n})^{-1} \frac{X^{\top} y}{n}$$
+   so :  $$ \hat{\beta}^{\rm LS}=(X^{\top}X)^{-1}X^{\top}y$$
+\end{itemize}
+}
 
-    \end{itemize}
+\vspace{0.6cm}
 
-
-\end{alertblock}
-
-\begin{block}{Notice}
-    \begin{itemize}
-        \item  In practice it is exceptional to invert $\hat{\Sigma} $ because one solves many linear systems
-
-    \end{itemize}
-
-
-\end{block}
+\rem In practice it is exceptional to invert $\hat{\Sigma} $ because one solves many linear systems
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -321,10 +321,8 @@ Calculate the coefficients $\beta$ on a training sample and predict on a test sa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Data analysis}
 
-\begin{block}{Conclusion}
+\underline{Conclusion}:
 The prediction is very bad on qualitative features. We notice that the $R^2$ is closed to 0 and it's mostly the same with the others qualitative features. With this dataset, the OLS model is not efficient for qualitative features.
-
-\end{block}
 
 \begin{block}{Prediction of a quantitative feature}
 Predict the number of accidents with the date (day, month and year) that is an ordinal feature with periodic component. Results are also very bad.
@@ -389,7 +387,7 @@ Let $\Sigma\in\mathbb{R}^{p \times p}$.
 If $\Sigma^{\top}=\Sigma$ then $\Sigma$ is diagonalizable.
 \end{block}
 \begin{alertblock}{Theorem}
-For all matrix $M\in\mathbb{R}^{m_1 \times m_2}$ of rank $r$, there exist two orthogonal matrix $U\in \mathbb{R}^{m_1 \times r}$ and $V\in\mathbb{R}^{m_2 \times r}$ such that :
+For all matrix $M\in\mathbb{R}^{m_1 \times m_2}$ of  ${\rm rank} (r)$, there exist two orthogonal matrix $U\in \mathbb{R}^{m_1 \times r}$ and $V\in\mathbb{R}^{m_2 \times r}$ such that :
 \begin{center}
     $M=U \diag(s_{1},\dots, s_{r})U^{\top}$
 \end{center}
