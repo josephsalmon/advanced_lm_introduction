@@ -180,21 +180,16 @@ We can verify the first order optimality condition because $\nabla{f(\hat\beta^{
 Note that $f$ is a $C^{\infty}$ function, then differentiable
 
 \end{alertblock}
-
-\\\begin{block}{Remark}
-$f$ is a convex function so a local minimum is a global one.
-\end{block}
+\rem $f$ is a convex function so a local minimum is a global one.
 
 \begin{block}{Conclusion}
 $\hat\beta^{LS}$ satisfy the following equations of orthogonality :
 \begin{itemize}
         \item $\frac{X^TX}{n}\hat\beta^{LS}-\frac{X^Ty}{n}=0$
-        \item \iff $X^T(\frac{X\hat\beta^{LS}-y}{n})=0$
-        \item \iff $X^T(y-X\hat\beta^{LS})=0$
-        \item \iff $\langle X_{j},y-X\beta\rangle=0$ for j in 1:p
+        \item $\iff X^T(\frac{X\hat\beta^{LS}-y}{n})=0$
+        \item $\iff X^T(y-X\hat\beta^{LS})=0$
+        \item $\iff \langle X_{j},y-X\beta\rangle=0$ for $ j \in [p]$
     \end{itemize}
-
-
 \end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +199,7 @@ $\hat\beta^{LS}$ satisfy the following equations of orthogonality :
 \begin{frame}{XXX?} % XXX TODO give a name
 \begin{block}{Attention}
 
-If $p$ < $n$ so rank($X$) \leq $n$ < p Then $\hat\beta^{LS}$ is not unique
+If $p < n$ so $\rank(X) \leq n < p$.Then, $\hat\beta^{LS}$ is not unique
 
 \end{block}
 \end{frame}
