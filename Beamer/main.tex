@@ -1,14 +1,11 @@
 \documentclass[unknownkeysallowed]{beamer}
 \usepackage[french,english]{babel}
-\usepackage{beamer_js}
-\usepackage{shortcuts_js}
-
-% % package for JS compilation:
-% \usepackage{/home/jo/Documents/OrganizationFiles/tex/sty/beamer_js}
-% \usepackage{/home/jo/Documents/OrganizationFiles/tex/sty/shortcuts_js}
+\usepackage{../../sty/beamer_js}
+\usepackage{../../sty/shortcuts_js}
 \usepackage{csquotes}
 
-\graphicspath{{./prebuiltimages/}}
+
+\graphicspath{{./prebuiltimages/},{../../sharedimages/}}
 
 \addbibresource{Bibliographie.bib}
 \usepackage{enumerate}
@@ -28,7 +25,7 @@
 \bigskip
 \begin{center}{
 \LARGE\color{marron}
-\textbf{HMMA 307 : Advanced Linear Modeling}
+\textbf{HMMA 307 : \\ Advanced Linear Modeling}
 \textbf{ }\\
 \vspace{0.5cm}
 }
@@ -94,32 +91,35 @@ Université de Montpellier \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Model}
-Suppose the data consists of$n$ samples $(y_i, x_i)_{i=1,\dots,n}$ with $p$ features.
-\newline The model can be written in matrix notation as :
-\begin{center}
-$y=X\beta+\varepsilon$
-\end{center}
+Observations: $n$ samples $(y_i, x_i)_{i=1,\dots,n}$ with $p$ features.
+
+The model can be written in matrix notation as :
+
+\begin{align*}
+	\boxed{y=X\beta+\varepsilon}
+\end{align*}
+
 where
 \begin{itemize}
-	\item $X=[\bfx_1,\dots,\bfx_p]= [x_1^\top,\dots,x_n^\top]^\top$ is an $n \times p$ matrix of regressors
+	\item $X=[\bfx_1,\dots,\bfx_p]= [x_1^\top,\dots,x_n^\top]^\top$ is an $n \times p$ matrix of covariates/features
 	\item $\beta$ is a $p \times 1$ vector of unknown parameters
-	\item $\varepsilon$ is a vector of normal random errors with mean $0$
+	\item $\varepsilon$ is a vector of \iid random normal errors with mean $0$
 \end{itemize}
-XXX % fix issues when using x_i (for i=1...n) and \bfx_j (j=1...p)
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-The OLS estimator is any coefficient vector
+\begin{frame}{(Ordinary) Least squares:  $\hat\beta^{\rm LS}$}
+The \mybold{LS} estimator is any coefficient vector
 $\hat\beta^{\rm LS}\in\mathbb{R}^p$ such that :
 \newline
-\begin{align}
+\begin{align*}
 \hat\beta^{\rm LS} \in \argmin_{\beta \in \bbR^p}
-\underbrace{\frac{1}{2n}\|y-X\beta\|^2 }_{f(\beta)}
-\end{align}
-\vspace{0.5cm}
+\underbrace{\frac{1}{2n}\|y-X\beta\|^2}_{f(\beta)}
+\end{align*}
+\vspace{0.25cm}
 and
 \begin{align*}
 	f(\beta)
@@ -127,120 +127,177 @@ and
 	= \beta^{\top}\frac{X^{\top}X}{2n}\beta+\frac{1}{2n}\|y\|^2- \langle y,X\beta\rangle
 \end{align*}
 
-\vspace{0.5cm}
+\vspace{0.25cm}
+
 where
 $\langle y,X\beta\rangle=y^{\top}X\beta=\beta^{\top}X^{\top}y=\langle \beta,X^{\top}y\rangle$
+
+\vspace{0.5cm}
+
+\rem $1/2$ is convenient for optimization (computing gradients), and $1/n$ for if $n\to\infty$ ($p$ fixed) then the objective function convergences to something like $\bbE\left[\frac{1}{2n} (y_{\infty}-x^\top_{\infty} \beta\right]^2$.
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
+\begin{frame}{Gram Matrix}
 \mytheorem{Notation}{
-The matrix $\hat\Sigma=\frac{X^{\top}X}{n}$ matrix is called the Gram matrix.
-\begin{center}
-    $X^{\top}X=\begin{pmatrix}
-   x_{1}^{\top}  \\
+The matrix $\hat\Sigma=\frac{X^{\top}X}{n}$ is called the \mybold{Gram} matrix.
+
+\begin{align*}
+	X^{\top}X=\begin{pmatrix}
+   \bfx_{1}^{\top}  \\
    \vdots   \\
-   x_{p}^{\top}  \\
-\end{pmatrix}(x_{1},\dots, x_{p}) $,
-\end{center}
+   \bfx_{p}^{\top}  \\
+\end{pmatrix}(\bfx_{1},\dots, \bfx_{p})
+\end{align*}
 }
 
-The Gram matrix is equivalent to :
+\vspace{1cm}
+Elementwise Gram matrix :
+$[X^{\top}X]_{j,j'}
+=
+[\langle \bfx_{j}, \bfx_{j'}\rangle]_{(j,j') \in \llbracket 1,p \rrbracket^2}$
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Standarization: centering} % XXX TODO give a name
+
+\mybold{Feature centering}\footnote{the average is performed along samples!}:
+
+Compute the columns sample means:
+
+\begin{align}\label{eq:mean}\tag{*}
+ \bar{\bfx}_{j} = \frac{1}{n} \sum_{i=1}^{n} x_{ij}
+\end{align}
+
+Use Equation~\eqref{eq:mean} to get the centered matrix:
+
 \begin{align*}
-[X^{\top}X]_{j,j'}=[\langle x_{j},x_{j'}\rangle]_{(j,j')\in[1,p]^2}
+	{\rm centering} (X) := \bar{X} = X - \left[\bar{\bfx}_{1}\ind_n,\dots,\bar{\bfx}_{p}\ind_n\right]
 \end{align*}
 
-\rem
-Most of the times, we scale features.
-\newline
-We have : $\bar{X_{j}}=\frac{1}{n} \sum\limits_{i=1}^{n} x_{ij}$ (1)
-\newline
- To center explanatory variables, we use the equation (1) to build the centered vector $X_{c}$
-\newline
-$X_{c} = X - (\bar{X_{1}}1_n,\dots,\bar{X_{p}}1_n)$ where $\1_n=(1,\dots,1)$
+where $\ind_n=(1,\dots,1)^\top$
+
+\vspace{0.4cm}
+
+\rem $\bar{X}$ has columns with zero means
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Standardization: scaling}
+
+\mybold{Feature scaling} (reduction):
+\begin{align*}
+	\hat\sigma_{j}^2 = \frac{1}{n} \sum_{i=1}^{n} (x_{ij}-\bar{\bfx}_{j})^2
+\end{align*}
+
+
+and then one can define:
+
+\begin{align*}
+	S_X = \diag(\hat\sigma_{1},\dots, \hat\sigma_{p})
+\end{align*}
+
+
+To get the standardized matrix:
+
+\begin{align*}
+	{\rm stdzing}(X)
+	& = {\rm center}(X) \cdot S_X^{-1} \\
+	& = \left[\frac{\bfx_{a}-\bar{\bfx}_{a}\ind_n}{\hat\sigma_{a}},
+			  \dots,
+   	          \frac{\bfx_{p}-\bar{\bfx}_{p}\ind_n}{\hat\sigma_{p}}
+        \right]
+\end{align*}
+
+\rem  \texttt{sklearn}\footnote{\url{https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html}} convention is $1/n$ (could have been $1/(n-1)$)
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
-Then we obtain $\bar{X_{c}}=0_n$
-
-To reduce explanatory variables, we use :
-\newline
-\begin{center}
-$\hat\sigma_{j}^2=\frac{1}{n} \sum\limits_{i=1}^{n} (X_{ij}-\bar{X_{j}})$
-\end{center}
-Let $X_r$ be the reduced vector, then :
-\newline
-\begin{center}
-$X_{r_{j}}=\frac{X_{j}-\bar{X_{j}}1_n}{\hat\sigma_{j}}$
-\end{center}
-
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}{Optimization}
 \mytheorem{First Order Optimality Conditions}{
-We can verify the first order optimality condition because
+Since $f$ is differentiable over $\bbR^p$, the following holds:
 
 \begin{align*}
 	\nabla{f(\hat\beta^{\rm LS})}=0
 \end{align*}
 }
 
-\vspace{0.4cm}
+\vspace{0.2cm}
 
-\rem If $f$ is a $C^{\infty}$ function, then it is differentiable
+\rem If $f$ is even $C^{\infty}$ a function
 
+\vspace{0.2cm}
 
-\rem $f$ is a convex function so a local minimum is a global one.
+\rem $f$ is a convex function so a local minimum is a global one
 
-\vspace{0.4cm}
+\vspace{0.2cm}
 
 \underline{Conclusion}:
 $\hat\beta^{\rm LS}$ satisfies the following equations of orthogonality :
+
 \begin{align*}
-\nabla{f(\hat\beta^{\rm LS})} = 0
-& \iff\frac{X^{\top}X}{n}\hat\beta^{\rm LS}-\frac{X^{\top}y}{n}=0\\
-& \iff X^{\top}(\frac{X\hat\beta^{\rm LS}-y}{n})=0\\
-& \iff X^{\top}(y-X\hat\beta^{\rm LS})=0\\
-& \iff \langle X_{j},y-X\beta\rangle=0 \text{for}  j \in [p]\\
+	\nabla{f(\hat\beta^{\rm LS})} = 0
+	& \iff\frac{X^{\top}X}{n}\hat\beta^{\rm LS}-\frac{X^{\top}y}{n}=0\\
+	& \iff X^{\top}(\frac{X\hat\beta^{\rm LS}-y}{n})=0\\
+	& \iff X^{\top}(y-X\hat\beta^{\rm LS})=0\\
+	& \iff \langle \bfx_{j},y-X\beta\rangle=0, \forall j \in \llbracket 1,p\rrbracket\\
 \end{align*}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
-\begin{block}{Attention}
+\begin{frame}{High dimension warning} % XXX TODO give a name
 
-If $p < n$ so ${\rm rank}(X) \leq n < p$.Then, $\hat{\beta}^{\rm LS}$ is not unique
 
-\end{block}
+\danger When $p  > n$ \textbf{and}  ${\rm rank}(X) \leq n $, then, $\hat{\beta}^{\rm LS}$ is not unique
+
+\vspace{1cm}
+
+\rem this happens when $\hat\Sigma$ is singular
+
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
-\begin{alertblock}{Interpretation}
-    \begin{itemize}
-        \item  Each explanatory feature is orthogonal to the residuals $\Gamma=y-X\hat{\beta}^{\rm LS}$ With $\hat{\beta}^{\rm LS}$ a solution of the linear $p$$\times$$p$ system : $$ \hat{\Sigma}\beta= \frac{X^{\top} y}{n}  $$
+\begin{frame}{Normal equations}
+\mytheorem{Interpretation}{
+Each feature is orthogonal to the residuals $r=y-X\hat{\beta}^{\rm LS}$:
 
-    \end{itemize}
-\end{alertblock}
+\begin{align*}
+	\forall j \in \llbracket 1,p\rrbracket, \langle r,\bfx_j\rangle = 0
+\end{align*}
 
+
+The LS vector $\hat{\beta}^{\rm LS}$ is a solution of a  $p \times p$ linear system $\beta$:
+
+\vspace{-0.20cm}
+
+\begin{align*}
+\hat{\Sigma}\beta= \frac{X^{\top} y}{n}
+\end{align*}
+\vspace{-0.80cm}
+
+}
 
 \rem
     \begin{itemize}
-        \item  If $\hat{\Sigma}$ is invertible, the solution of the linear system is unique
+        \item  $\hat{\Sigma}$ is invertible $\Rightarrow$ the solution of the linear system is unique
         \item $\hat{\Sigma}$ is invertible $\Rightarrow$ $\hat{\Sigma}$ is positive definite
-        \item If $\hat{\Sigma}$ invertible, so ${\rm rank}(\hat{\Sigma})=p$
+        \item $\hat{\Sigma}$ invertible $\Rightarrow$ ${\rm rank}(\hat{\Sigma})=p$
         \item we assume that we have a full rank column e.g. : $${\rm rank}(X)=\dim(\vect(X_1,\dots,X_p)) \leq n $$
     \end{itemize}
 
@@ -249,32 +306,37 @@ If $p < n$ so ${\rm rank}(X) \leq n < p$.Then, $\hat{\beta}^{\rm LS}$ is not uni
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
+\begin{frame}{The full column rank case} % XXX TODO give a name
 
-\mytheorem{Result}{
-\begin{itemize}
-    \item  If ${\rm rank}(X)=p$, so $\hat{\Sigma}$ is invertible and : $$\hat{\beta}^{\rm LS}=\hat{\Sigma}^{-1}\frac{X^{\top} y}{n}=(\frac{X^{\top} y}{n})^{-1} \frac{X^{\top} y}{n}$$
-   so :  $$ \hat{\beta}^{\rm LS}=(X^{\top}X)^{-1}X^{\top}y$$
-\end{itemize}
+\mytheorem{Theorem}{
+If ${\rm rank}(X)=p$, then $\hat{\Sigma}$ is invertible and one has
+
+\begin{align*}
+	\hat{\beta}^{\rm LS}=(X^{\top}X)^{-1}X^{\top}y
+\end{align*}
 }
-
 \vspace{0.6cm}
 
-\rem In practice it is exceptional to invert $\hat{\Sigma} $ because one solves many linear systems
+Proof:
+ $$\hat{\beta}^{\rm LS}=\hat{\Sigma}^{-1}\frac{X^{\top} y}{n}=\left(\frac{X^{\top} X}{n}\right)^{-1} \frac{X^{\top} y}{n}$$
+
+\vspace{0.3cm}
+
+\rem In practice you hardly ever invert $\hat{\Sigma} $, but rather solve a linear system (inverting = solving $p$ systems here, when one is enough)
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Data analysis}
-\begin{block}{Goal}
-We want to build some ordinary least squares models of prediction with two datasets:
+\begin{exampleblock}{Motivation}
+Using ordinary least squares models on two datasets:
 
 \begin{itemize}
 	\item Bicycle accidents
 	\item Count data of bicycles
 	\end{itemize}
-\end{block}
+\end{exampleblock}
 
 \vspace{0.5cm}
 
@@ -283,7 +345,7 @@ We propose to estimate the severity of accidents by the feature "sexe". The prob
     \item Modalities of the feature to predict: "0 - Indemne", "1 - Blessé léger", "Blessé hospitalisé", and "3 - Tué"
     \item Modalities of the feature "sexe": "M" and "F"
 \end{itemize}
-XXX % XXX TODO: details better the dataset
+Source: see associated code % XXX TODO: details better the dataset
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -291,15 +353,13 @@ XXX % XXX TODO: details better the dataset
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Data analysis}
 
-\begin{alertblock}{Solution}
-We convert features into ordinal features.
-\end{alertblock}
+First: convert features into ordinal features.
 
-\begin{block}{Prediction principle}
+\begin{exampleblock}{Prediction principle}
 
 Calculate the coefficients $\beta$ on a training sample and predict on a test sample the feature of interest. 0 is the value for male and 1 is the value for female.
 
-\end{block}
+\end{exampleblock}
 
 
 \begin{minipage}[c]{.36\linewidth}
@@ -325,10 +385,10 @@ Calculate the coefficients $\beta$ on a training sample and predict on a test sa
 \underline{Conclusion}:
 The prediction is very bad on qualitative features. We notice that the $R^2$ is closed to 0 and it's mostly the same with the others qualitative features. With this dataset, the OLS model is not efficient for qualitative features.
 
-\begin{block}{Prediction of a quantitative feature}
+\begin{exampleblock}{Prediction of a quantitative feature}
 Predict the number of accidents with the date (day, month and year) that is an ordinal feature with periodic component. Results are also very bad.
 
-\end{block}
+\end{exampleblock}
 
 \begin{minipage}[c]{.36\linewidth}
      \begin{center}
@@ -350,9 +410,9 @@ Predict the number of accidents with the date (day, month and year) that is an o
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Data analysis}
 
-\begin{block}{Same thing on the second dataset}
+\begin{exampleblock}{Same thing on the second dataset}
 Prediction of the number of bicycles in a day with the date and the total number of bicycles. We introduce also periodic components.
-\end{block}
+\end{exampleblock}
 
 
 \begin{minipage}[c]{.36\linewidth}
@@ -381,7 +441,7 @@ Prediction of the number of bicycles in a day with the date and the total number
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
+\begin{frame}{SVD} % XXX TODO give a name
 
 \underline{Reminder}: Let $\Sigma\in\mathbb{R}^{p \times p}$, if $\Sigma^{\top}=\Sigma$ then $\Sigma$ is diagonalizable.
 
@@ -404,7 +464,7 @@ et $V=[v_{1} \dots v_{r}]$
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{XXX?} % XXX TODO give a name
+\begin{frame}{Pseudo-inverse} % XXX TODO give a name
 
 \mytheorem{Definition}{
 For $M\in\mathbb{R}^{m_1 \times m_2}$, a pseudoinverse of $M$ is defined as a matrix $M^{+}$ satisfying :
